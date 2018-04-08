@@ -41,7 +41,6 @@ public class MainController implements Initializable, OnSocketEventListener {
     @FXML private Label masterSwapMemLabel;
     @FXML private ProgressBar masterSwapMemProgress;
     @FXML private ToggleButton masterToggleBtn;
-    private boolean isMasterSelected = false;
 
     @FXML private TitledPane slave1Pane;
     @FXML private Label slave1CpuLabel;
@@ -51,7 +50,6 @@ public class MainController implements Initializable, OnSocketEventListener {
     @FXML private Label slave1SwapMemLabel;
     @FXML private ProgressBar slave1SwapMemProgress;
     @FXML private ToggleButton slave1ToggleBtn;
-    private boolean isSlave1Selected = false;
 
     @FXML private TitledPane slave2Pane;
     @FXML private Label slave2CpuLabel;
@@ -61,7 +59,6 @@ public class MainController implements Initializable, OnSocketEventListener {
     @FXML private Label slave2SwapMemLabel;
     @FXML private ProgressBar slave2SwapMemProgress;
     @FXML private ToggleButton slave2ToggleBtn;
-    private boolean isSlave2Selected = false;
 
     private List<List<Label>> bindingLabels = new ArrayList<>();
     private List<List<ProgressBar>> bindingProgressBars = new ArrayList<>();
@@ -112,42 +109,42 @@ public class MainController implements Initializable, OnSocketEventListener {
         bindingToggleButtons.add(slave2ToggleBtn);
 
         masterToggleBtn.setOnAction(event -> {
-            if (!isMasterSelected) {
+            if (masterToggleBtn.isSelected()) {
                 ClientThread clientThread =
                         new ClientThread(this, MASTER_ID,
                                 ServerConstants.ADDRESS[0], ServerConstants.PORTS[0]);
                 runningThreads[0] = clientThread;
                 runningThreads[0].start();
+                masterToggleBtn.setDisable(true);
             } else {
                 runningThreads[0].interrupt();
             }
-            isMasterSelected = !isMasterSelected;
         });
 
         slave1ToggleBtn.setOnAction(event -> {
-            if (!isSlave1Selected) {
+            if (slave1ToggleBtn.isSelected()) {
                 ClientThread clientThread =
                         new ClientThread(this, SLAVE1_ID,
                                 ServerConstants.ADDRESS[1], ServerConstants.PORTS[1]);
                 runningThreads[1] = clientThread;
                 runningThreads[1].start();
+                slave1ToggleBtn.setDisable(true);
             } else {
                 runningThreads[1].interrupt();
             }
-            isSlave1Selected = !isSlave1Selected;
         });
 
         slave2ToggleBtn.setOnAction(event -> {
-            if (!isSlave2Selected) {
+            if (slave2ToggleBtn.isSelected()) {
                 ClientThread clientThread =
                         new ClientThread(this, SLAVE2_ID,
                                 ServerConstants.ADDRESS[2], ServerConstants.PORTS[2]);
                 runningThreads[2] = clientThread;
                 runningThreads[2].start();
+                slave2ToggleBtn.setDisable(true);
             } else {
                 runningThreads[2].interrupt();
             }
-            isSlave2Selected = !isSlave2Selected;
         });
     }
 
@@ -157,10 +154,13 @@ public class MainController implements Initializable, OnSocketEventListener {
         Platform.runLater(() -> {
             if (id == MASTER_ID) {
                 masterPane.setText("Master [Connected]");
+                masterToggleBtn.setDisable(false);
             } else if (id == SLAVE1_ID) {
                 slave1Pane.setText("Slave1 [Connected]");
+                slave1ToggleBtn.setDisable(false);
             } else if (id == SLAVE2_ID) {
                 slave2Pane.setText("Slave2 [Connected]");
+                slave2ToggleBtn.setDisable(false);
             }
         });
     }
@@ -248,6 +248,7 @@ public class MainController implements Initializable, OnSocketEventListener {
             progressBar.setProgress(0);
         }
         bindingToggleButtons.get(id).setSelected(false);
+        bindingToggleButtons.get(id).setDisable(false);
 
         if (id == MASTER_ID) {
             masterPane.setText("Master [Disconnected]");
