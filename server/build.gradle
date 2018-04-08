@@ -11,6 +11,17 @@ repositories {
 
 mainClassName = 'server.system.monitor.server.Main'
 
+jar {
+    manifest {
+        attributes 'Title': 'ServerSystemMonitor.Server', 'Version': version, 'Main-Class': mainClassName
+    }
+    archiveName "ServerSystemMonitor.Server.jar"
+    dependsOn configurations.runtime
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
 dependencies {
     compile project(":common")
     compile fileTree(dir: 'libs', include: ['*.jar'])
