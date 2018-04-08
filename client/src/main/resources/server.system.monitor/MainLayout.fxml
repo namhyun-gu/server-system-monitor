@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="254.0" maxWidth="808.0" stylesheets="@main_layout.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.system.monitor.client.MainController">
+    <HBox alignment="CENTER" layoutX="8" layoutY="8" prefHeight="262.0" prefWidth="808.0" spacing="4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <TitledPane fx:id="masterPane" collapsible="false" text="Master [Disconnected]">
+            <VBox spacing="4">
+                <VBox spacing="4">
+                    <Label text="CPU" />
+                    <Label fx:id="masterCpuLabel" text="0%" />
+                    <ProgressBar fx:id="masterCpuProgress" prefWidth="240.0" progress="0.0" />
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label text="System Memory" />
+                    <Label fx:id="masterSysMemLabel" text="0 GB / 0 GB (0%)" />
+                    <ProgressBar fx:id="masterSysMemProgress" prefWidth="240.0" progress="0.0" />
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label text="Swap Memory" />
+                    <Label fx:id="masterSwapMemLabel" text="0 GB / 0 GB (0%)" />
+                    <ProgressBar fx:id="masterSwapMemProgress" prefWidth="240.0" progress="0.0" />
+                </VBox>
+                <Separator prefWidth="200.0" />
+                <HBox spacing="4" alignment="CENTER_LEFT">
+                    <ToggleButton fx:id="masterToggleBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" />
+                </HBox>
+            </VBox>
+        </TitledPane>
+        <TitledPane fx:id="slave1Pane" collapsible="false" text="Slave1 [Disconnected]">
+            <VBox spacing="4">
+                <VBox spacing="4">
+                    <Label text="CPU" />
+                    <Label fx:id="slave1CpuLabel" text="0%" />
+                    <ProgressBar fx:id="slave1CpuProgress" prefWidth="240.0" progress="0.0" />
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label text="System Memory" />
+                    <Label fx:id="slave1SysMemLabel" text="0 GB / 0 GB (0%)" />
+                    <ProgressBar fx:id="slave1SysMemProgress" prefWidth="240.0" progress="0.0" />
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label text="Swap Memory" />
+                    <Label fx:id="slave1SwapMemLabel" text="0 GB / 0 GB (0%)" />
+                    <ProgressBar fx:id="slave1SwapMemProgress" prefWidth="240.0" progress="0.0" />
+                </VBox>
+
+                <Separator prefWidth="200.0" />
+                <HBox spacing="4" alignment="CENTER_LEFT">
+                    <ToggleButton fx:id="slave1ToggleBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" />
+                </HBox>
+            </VBox>
+        </TitledPane>
+        <TitledPane fx:id="slave2Pane" collapsible="false" text="Slave2 [Disconnected]">
+            <VBox spacing="4">
+                <VBox spacing="4">
+                    <Label text="CPU" />
+                    <Label fx:id="slave2CpuLabel" text="0%" />
+                    <ProgressBar fx:id="slave2CpuProgress" prefWidth="240.0" progress="0.0" />
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label text="System Memory" />
+                    <Label fx:id="slave2SysMemLabel" text="0 GB / 0 GB (0%)" />
+                    <ProgressBar fx:id="slave2SysMemProgress" prefWidth="240.0" progress="0.0" />
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label text="Swap Memory" />
+                    <Label fx:id="slave2SwapMemLabel" text="0 GB / 0 GB (0%)" />
+                    <ProgressBar fx:id="slave2SwapMemProgress" prefWidth="240.0" progress="0.0" />
+                </VBox>
+
+                <Separator prefWidth="200.0" />
+                <HBox spacing="4" alignment="CENTER_LEFT">
+                    <ToggleButton fx:id="slave2ToggleBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" />
+                </HBox>
+            </VBox>
+        </TitledPane>
+    </HBox>
+</AnchorPane>

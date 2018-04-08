@@ -1,0 +1,17 @@
+version rootProject.version
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+mainClassName = 'server.system.monitor.client.Main'
+
+dependencies {
+    compile project(":common")
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

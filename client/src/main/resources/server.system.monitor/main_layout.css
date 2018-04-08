@@ -1,0 +1,15 @@
+.toggle-button {
+    -fx-pref-width: 24px;
+    -fx-pref-height: 24px;
+    -fx-graphic: url("icon/ic_play_arrow_black_24dp_1x.png");
+}
+
+.toggle-button:selected {
+    -fx-pref-width: 24px;
+    -fx-pref-height: 24px;
+    -fx-graphic: url("icon/ic_stop_black_24dp_1x.png");
+}
+
+.settings-button {
+    -fx-graphic: url("icon/ic_settings_black_24dp_1x.png");
+}
