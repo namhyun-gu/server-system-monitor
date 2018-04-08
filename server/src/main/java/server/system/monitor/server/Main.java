@@ -12,7 +12,7 @@ public class Main implements OnSocketEventListener {
     public static void main(String[] args) {
         port = DEFAULT_PORT;
         if (args.length > 0) {
-            port = Integer.parseInt(args[1]);
+            port = Integer.parseInt(args[0]);
         }
         ServerThread serverThread = new ServerThread(new Main(), port);
         serverThread.start();
