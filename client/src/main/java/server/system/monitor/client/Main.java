@@ -17,10 +17,14 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         URL url = getClass().getResource("/server.system.monitor/MainLayout.fxml");
-        Parent root = FXMLLoader.load(url);
+        FXMLLoader loader = new FXMLLoader(url);
+        Parent root = loader.load();
+        MainController controller = loader.getController();
+
         primaryStage.setResizable(false);
         primaryStage.setTitle("Server System Monitor");
         primaryStage.setScene(new Scene(root));
+        primaryStage.setOnHidden(event -> controller.interruptAllThreads());
         primaryStage.show();
     }
 }

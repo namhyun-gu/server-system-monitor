@@ -208,6 +208,15 @@ public class MainController implements Initializable, OnSocketEventListener {
         // No-op
     }
 
+    public void interruptAllThreads() {
+        for (int index = 0; index < 3; index++) {
+            ClientThread thread = runningThreads[index];
+            if (thread != null && thread.isAlive()) {
+                thread.interrupt();
+            }
+        }
+    }
+
     private void processMessage(int id, String message) {
         SystemStatus systemStatus = parseMessage(message);
         CpuStatus cpuStatus = systemStatus.getCpu();
