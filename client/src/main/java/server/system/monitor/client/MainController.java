@@ -1,10 +1,18 @@
 package server.system.monitor.client;
 
 import com.google.gson.Gson;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TitledPane;
+import javafx.scene.control.ToggleButton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import server.system.monitor.listener.OnSocketEventListener;
@@ -12,12 +20,6 @@ import server.system.monitor.model.CpuStatus;
 import server.system.monitor.model.SwapMemory;
 import server.system.monitor.model.SystemMemory;
 import server.system.monitor.model.SystemStatus;
-
-import java.net.ConnectException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
 
 
 public class MainController implements Initializable, OnSocketEventListener {
@@ -180,16 +182,19 @@ public class MainController implements Initializable, OnSocketEventListener {
     public void onError(int id, Exception e) {
         logger.error("Error occurred (" + id + ")");
         e.printStackTrace();
-        if (e instanceof ConnectException) {
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error occurred");
-                alert.setHeaderText("Connect failed");
-                alert.setContentText(e.toString());
-                alert.show();
-                clearView(id);
-            });
+        StringBuilder stackTraceContent = new StringBuilder();
+        for (StackTraceElement traceElement : e.getStackTrace()) {
+            stackTraceContent.append(traceElement.toString()).append("\n");
         }
+
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error occurred");
+            alert.setHeaderText(e.toString());
+            alert.setContentText(stackTraceContent.toString());
+            alert.show();
+            clearView(id);
+        });
     }
 
     @Override
