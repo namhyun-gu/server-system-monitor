@@ -151,8 +151,8 @@ public class MainController implements Initializable, OnSocketEventListener {
     }
 
     @Override
-    public void onStarted(int id) {
-        logger.info("Server connection started (serverId: " + id + ")");
+    public void onStarted(int port, int id) {
+        logger.info("Server connection started (port: " + port + ", serverId: " + id + ")");
         Platform.runLater(() -> {
             if (id == MASTER_ID) {
                 masterPane.setText("Master [Connected]");

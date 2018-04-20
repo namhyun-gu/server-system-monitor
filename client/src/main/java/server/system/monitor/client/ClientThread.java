@@ -37,7 +37,7 @@ public class ClientThread extends Thread {
         try {
             Socket socket = initSocket();
             if (socket.isConnected()) {
-                socketEventListener.onStarted(serverId);
+                socketEventListener.onStarted(port, serverId);
                 while (!Thread.currentThread().isInterrupted()) {
                     InputStream inputStream = socket.getInputStream();
                     byte[] bytes = new byte[1024];

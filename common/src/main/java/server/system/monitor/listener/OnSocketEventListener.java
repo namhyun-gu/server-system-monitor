@@ -2,7 +2,7 @@ package server.system.monitor.listener;
 
 public interface OnSocketEventListener extends OnUserEventListener {
 
-    void onStarted(int id);
+    void onStarted(int port, int id);
 
     void onMessageReceived(int id, String message);
 

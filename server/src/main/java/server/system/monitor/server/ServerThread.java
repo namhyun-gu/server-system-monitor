@@ -10,19 +10,22 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerThread extends Thread {
+    public static final int DEFAULT_PORT = 4040;
+
     private static final int SERVER_ID = 0;
     private static final int UNALLOCATED_ID = -1;
+    private static final int MAX_USER = 100;
 
-    private final int MAX_USER = 100;
     private final OnSocketEventListener socketEventListener;
     private final OnUserEventListener userEventListener;
 
-    private int port = 4040;
+    private int port;
     private boolean[] userIds;
 
-    public ServerThread(OnSocketEventListener socketEventListener) {
+    public ServerThread(OnSocketEventListener socketEventListener, int port) {
         this.userIds = new boolean[MAX_USER];
         this.socketEventListener = socketEventListener;
+        this.port = port;
         this.userEventListener = new OnUserEventListener() {
             @Override
             public void onAccepted(int id) {
@@ -37,16 +40,11 @@ public class ServerThread extends Thread {
         };
     }
 
-    public ServerThread(OnSocketEventListener socketEventListener, int port) {
-        this(socketEventListener);
-        this.port = port;
-    }
-
     @Override
     public void run() {
         try {
             ServerSocket socket = initSocket();
-            socketEventListener.onStarted(SERVER_ID);
+            socketEventListener.onStarted(port, SERVER_ID);
             while (!Thread.currentThread().isInterrupted()) {
                 Socket userSocket = socket.accept();
                 int userId = allocateId();
