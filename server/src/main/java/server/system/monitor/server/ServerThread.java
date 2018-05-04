@@ -11,6 +11,7 @@ import java.net.Socket;
 
 public class ServerThread extends Thread {
     public static final int DEFAULT_PORT = 4040;
+    public static final int DEFAULT_INTERVAL = 5000;
 
     private static final int SERVER_ID = 0;
     private static final int UNALLOCATED_ID = -1;
@@ -20,12 +21,14 @@ public class ServerThread extends Thread {
     private final OnUserEventListener userEventListener;
 
     private int port;
+    private long interval;
     private boolean[] userIds;
 
-    public ServerThread(OnSocketEventListener socketEventListener, int port) {
+    public ServerThread(OnSocketEventListener socketEventListener, int port, long interval) {
         this.userIds = new boolean[MAX_USER];
         this.socketEventListener = socketEventListener;
         this.port = port;
+        this.interval = interval;
         this.userEventListener = new OnUserEventListener() {
             @Override
             public void onAccepted(int id) {
@@ -40,6 +43,8 @@ public class ServerThread extends Thread {
         };
     }
 
+
+
     @Override
     public void run() {
         try {
@@ -49,7 +54,7 @@ public class ServerThread extends Thread {
                 Socket userSocket = socket.accept();
                 int userId = allocateId();
                 if (userId != UNALLOCATED_ID) {
-                    UserThread userThread = new UserThread(userSocket, userId, socketEventListener, userEventListener);
+                    UserThread userThread = new UserThread(userSocket, userId, socketEventListener, userEventListener, interval);
                     userThread.start();
                 } else {
                     userSocket.close();

@@ -20,13 +20,15 @@ public class UserThread extends Thread {
     private final OnUserEventListener userEventListener;
     private Socket socket;
     private int userId;
+    private long interval;
 
-    public UserThread(Socket socket, int userId,
-                      OnSocketEventListener socketEventListener, OnUserEventListener userEventListener) {
+    public UserThread(Socket socket, int userId, OnSocketEventListener socketEventListener,
+        OnUserEventListener userEventListener, long interval) {
         this.socketEventListener = socketEventListener;
         this.userEventListener = userEventListener;
         this.socket = socket;
         this.userId = userId;
+        this.interval = interval;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class UserThread extends Thread {
 
                     socketEventListener.onMessageSent(userId);
                 }
-                Thread.sleep(5000);
+                Thread.sleep(interval);
             }
             socket.close();
             userEventListener.onDisconnected(userId);
