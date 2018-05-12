@@ -253,14 +253,14 @@ public class MainController implements Initializable, OnSocketEventListener {
     Mem mem = systemStatus.getMem();
     Swap swap = systemStatus.getSwap();
 
-    double memPercent = ((double) mem.getUsed() / mem.getTotal());
+    double memPercent = ((double) mem.getActualUsed() / mem.getTotal());
     double swapPercent = ((double) swap.getUsed() / swap.getTotal());
 
     List<Label> labels = bindingLabels.get(id);
     labels.get(0).setText(CpuPerc.format(cpu.getCombined()));
 
     labels.get(1).setText(String.format(MEM_LABEL_FORMAT,
-        Utils.toMemoryFormat(mem.getUsed()),
+        Utils.toMemoryFormat(mem.getActualUsed()),
         Utils.toMemoryFormat(mem.getTotal()),
         memPercent * 100));
     labels.get(2).setText(String.format(MEM_LABEL_FORMAT,

@@ -47,7 +47,8 @@ public class UserThread extends Thread {
 
           socketEventListener.onMessageSent(userId);
           System.out.println(systemStatus.getCpu());
-          System.out.println(systemStatus.getMem());
+          Mem mem = systemStatus.getMem();
+          System.out.println("Mem: " + mem.getTotal() / 1024L + "K av, " + mem.getActualUsed() / 1024L + "K used, " + mem.getActualFree() / 1024L + "K free");
           System.out.println(systemStatus.getSwap());
         }
         Thread.sleep(interval);
