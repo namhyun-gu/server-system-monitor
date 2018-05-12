@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import org.apache.commons.lang3.SystemUtils;
 import org.hyperic.sigar.CpuPerc;
 import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.Sigar;
@@ -47,8 +48,7 @@ public class UserThread extends Thread {
 
           socketEventListener.onMessageSent(userId);
           System.out.println(systemStatus.getCpu());
-          Mem mem = systemStatus.getMem();
-          System.out.println("Mem: " + mem.getTotal() / 1024L + "K av, " + mem.getActualUsed() / 1024L + "K used, " + mem.getActualFree() / 1024L + "K free");
+          System.out.println(getMemoryStatus(systemStatus.getMem()));
           System.out.println(systemStatus.getSwap());
         }
         Thread.sleep(interval);
@@ -80,5 +80,16 @@ public class UserThread extends Thread {
       socketEventListener.onError(userId, e);
     }
     return systemStatus;
+  }
+
+  private String getMemoryStatus(Mem mem) {
+    // If linux
+    String status =
+        "Mem: " + mem.getTotal() / 1024L + "K av, " + mem.getUsed() / 1024L + "K used, " + mem.getFree() / 1024L + "K free";
+    if (SystemUtils.IS_OS_LINUX) {
+      status += String
+          .format(" -/+ buffers/cache: " + "%dK %dK", mem.getActualUsed() / 1024L, mem.getActualFree() / 1024L);
+    }
+    return status;
   }
 }
