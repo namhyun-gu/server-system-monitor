@@ -13,13 +13,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleButton;
-import org.apache.commons.lang3.SystemUtils;
 import org.hyperic.sigar.CpuPerc;
-import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.Swap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import server.system.monitor.listener.OnSocketEventListener;
+import server.system.monitor.model.Memory;
 import server.system.monitor.model.SystemStatus;
 import server.system.monitor.util.Utils;
 
@@ -251,26 +250,18 @@ public class MainController implements Initializable, OnSocketEventListener {
 
   private void showView(int id, SystemStatus systemStatus) {
     CpuPerc cpu = systemStatus.getCpu();
-    Mem mem = systemStatus.getMem();
+    Memory mem = systemStatus.getMem();
     Swap swap = systemStatus.getSwap();
 
     List<Label> labels = bindingLabels.get(id);
     labels.get(0).setText(CpuPerc.format(cpu.getCombined()));
 
     double memPercent;
-    if (SystemUtils.IS_OS_LINUX) {
-      memPercent = ((double) (mem.getUsed() - mem.getActualUsed()) / mem.getTotal());
-      labels.get(1).setText(String.format(MEM_LABEL_FORMAT,
-          Utils.toMemoryFormat(mem.getUsed() - mem.getActualUsed()),
-          Utils.toMemoryFormat(mem.getTotal()),
-          memPercent * 100));
-    } else {
-      memPercent = ((double) mem.getUsed() / mem.getTotal());
-      labels.get(1).setText(String.format(MEM_LABEL_FORMAT,
-          Utils.toMemoryFormat(mem.getUsed()),
-          Utils.toMemoryFormat(mem.getTotal()),
-          memPercent * 100));
-    }
+    memPercent = ((double) (mem.getUsed()) / mem.getTotal());
+    labels.get(1).setText(String.format(MEM_LABEL_FORMAT,
+        Utils.toMemoryFormat(mem.getUsed()),
+        Utils.toMemoryFormat(mem.getTotal()),
+        memPercent * 100));
 
     double swapPercent = ((double) swap.getUsed() / swap.getTotal());
     labels.get(2).setText(String.format(MEM_LABEL_FORMAT,

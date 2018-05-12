@@ -1,16 +1,15 @@
 package server.system.monitor.model;
 
 import org.hyperic.sigar.CpuPerc;
-import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.Swap;
 
 public class SystemStatus {
 
   private CpuPerc cpuPerc;
-  private Mem mem;
+  private Memory mem;
   private Swap swap;
 
-  public SystemStatus(CpuPerc cpu, Mem mem, Swap swap) {
+  public SystemStatus(CpuPerc cpu, Memory mem, Swap swap) {
     this.cpuPerc = cpu;
     this.mem = mem;
     this.swap = swap;
@@ -20,7 +19,7 @@ public class SystemStatus {
     return cpuPerc;
   }
 
-  public Mem getMem() {
+  public Memory getMem() {
     return mem;
   }
 

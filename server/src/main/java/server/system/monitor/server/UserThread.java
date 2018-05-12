@@ -1,7 +1,9 @@
 package server.system.monitor.server;
 
 import com.google.gson.Gson;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
@@ -13,6 +15,7 @@ import org.hyperic.sigar.SigarException;
 import org.hyperic.sigar.Swap;
 import server.system.monitor.listener.OnSocketEventListener;
 import server.system.monitor.listener.OnUserEventListener;
+import server.system.monitor.model.Memory;
 import server.system.monitor.model.SystemStatus;
 
 public class UserThread extends Thread {
@@ -48,7 +51,7 @@ public class UserThread extends Thread {
 
           socketEventListener.onMessageSent(userId);
           System.out.println(systemStatus.getCpu());
-          System.out.println(getMemoryStatus(systemStatus.getMem()));
+          System.out.println(systemStatus.getMem());
           System.out.println(systemStatus.getSwap());
         }
         Thread.sleep(interval);
@@ -72,24 +75,38 @@ public class UserThread extends Thread {
     SystemStatus systemStatus = null;
     try {
       CpuPerc cpuPerc = sigar.getCpuPerc();
-      Mem mem = sigar.getMem();
+      Memory mem = getMemoryStatus(sigar);
       Swap swap = sigar.getSwap();
 
       systemStatus = new SystemStatus(cpuPerc, mem, swap);
-    } catch (SigarException e) {
+    } catch (SigarException | IOException e) {
       socketEventListener.onError(userId, e);
     }
     return systemStatus;
   }
 
-  private String getMemoryStatus(Mem mem) {
-    // If linux
-    String status =
-        "Mem: " + mem.getTotal() / 1024L + "K av, " + mem.getUsed() / 1024L + "K used, " + mem.getFree() / 1024L + "K free";
+  private Memory getMemoryStatus(Sigar sigar) throws SigarException, IOException {
+    Memory.Builder builder = new Memory.Builder();
     if (SystemUtils.IS_OS_LINUX) {
-      status += String
-          .format(" -/+ buffers/cache: " + "%dK %dK", mem.getActualUsed() / 1024L, mem.getActualFree() / 1024L);
+      Runtime runtime = Runtime.getRuntime();
+      Process process = runtime.exec("free");
+
+      BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+      reader.readLine();
+      String memInfoString = reader.readLine();
+      String[] splitMemInfo = memInfoString.split("\\s+");
+
+      final int INDEX_TOTAL = 1;
+      final int INDEX_USED = 2;
+      final int INDEX_FREE = 3;
+
+      builder.total(Long.parseLong(splitMemInfo[INDEX_TOTAL]) * 1024L)
+          .used(Long.parseLong(splitMemInfo[INDEX_USED]) * 1024L)
+          .free(Long.parseLong(splitMemInfo[INDEX_FREE]) * 1024L);
+    } else {
+      Mem mem = sigar.getMem();
+      builder.total(mem.getTotal()).used(mem.getUsed()).free(mem.getFree());
     }
-    return status;
+    return builder.build();
   }
 }
