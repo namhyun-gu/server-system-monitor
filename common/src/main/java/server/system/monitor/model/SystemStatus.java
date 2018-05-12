@@ -1,34 +1,30 @@
 package server.system.monitor.model;
 
+import org.hyperic.sigar.CpuPerc;
+import org.hyperic.sigar.Mem;
+import org.hyperic.sigar.Swap;
+
 public class SystemStatus {
-    private CpuStatus cpu;
-    private SystemMemory systemMemory;
-    private SwapMemory swapMemory;
 
-    public SystemStatus(CpuStatus cpu, SystemMemory systemMemory, SwapMemory swapMemory) {
-        this.cpu = cpu;
-        this.systemMemory = systemMemory;
-        this.swapMemory = swapMemory;
-    }
+  private CpuPerc cpuPerc;
+  private Mem mem;
+  private Swap swap;
 
-    public CpuStatus getCpu() {
-        return cpu;
-    }
+  public SystemStatus(CpuPerc cpu, Mem mem, Swap swap) {
+    this.cpuPerc = cpu;
+    this.mem = mem;
+    this.swap = swap;
+  }
 
-    public SystemMemory getSystemMemory() {
-        return systemMemory;
-    }
+  public CpuPerc getCpu() {
+    return cpuPerc;
+  }
 
-    public SwapMemory getSwapMemory() {
-        return swapMemory;
-    }
+  public Mem getMem() {
+    return mem;
+  }
 
-    @Override
-    public String toString() {
-        return "SystemStatus{" +
-                "cpu=" + cpu +
-                ", systemMemory=" + systemMemory +
-                ", swapMemory=" + swapMemory +
-                '}';
-    }
+  public Swap getSwap() {
+    return swap;
+  }
 }

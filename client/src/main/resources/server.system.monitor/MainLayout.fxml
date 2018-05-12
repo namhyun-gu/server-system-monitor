@@ -21,7 +21,7 @@
                 </VBox>
 
                 <VBox spacing="4">
-                    <Label text="System Memory" />
+                    <Label text="Memory" />
                     <Label fx:id="masterSysMemLabel" text="0 GB / 0 GB (0%)" />
                     <ProgressBar fx:id="masterSysMemProgress" prefWidth="240.0" progress="0.0" />
                 </VBox>
@@ -46,7 +46,7 @@
                 </VBox>
 
                 <VBox spacing="4">
-                    <Label text="System Memory" />
+                    <Label text="Memory" />
                     <Label fx:id="slave1SysMemLabel" text="0 GB / 0 GB (0%)" />
                     <ProgressBar fx:id="slave1SysMemProgress" prefWidth="240.0" progress="0.0" />
                 </VBox>
@@ -72,7 +72,7 @@
                 </VBox>
 
                 <VBox spacing="4">
-                    <Label text="System Memory" />
+                    <Label text="Memory" />
                     <Label fx:id="slave2SysMemLabel" text="0 GB / 0 GB (0%)" />
                     <ProgressBar fx:id="slave2SysMemProgress" prefWidth="240.0" progress="0.0" />
                 </VBox>
